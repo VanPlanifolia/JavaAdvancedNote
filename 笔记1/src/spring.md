@@ -1,0 +1,16 @@
+## Springboot
+
+#### **1.springboot的自动装配原理**
+
+springboot的自动装配原理就在springboot的启动类上面的注解中，@SpringBootApplication，这是一个复合注解它由一些元注解与
+
+@SpringBootConfiguration，@EnableAutoConfiguration，@ComponentScan 构成其中第一个是注明这个springboot启动类是一个spring的配置类，我们可以在这里注册一些bean到spring容器中，第三个注解就是开启包扫描，默认扫描springboot启动类同级目录下的spring组件。
+
+而第二个注解@EnableAutoConfiguration就是springboot自动装配的原理，它也是个复合注解，包括有一下两个内容，自动包扫描与导入选择器类，导入选择器这个类会导入spring.factory这个文件中的写的所有xxxAutoConfiguration类，然后这些类中都会通过方法读取一个与之对应的xxxProperties类，这个类保存着导入类的默认信息当让这个类中的默认信息也可以通过springboot的配置文件application.yaml来进行修改。虽然springboot导入了所有的类但是这些类不会全部生效这些类中有@Conditional注解这个注解会判断当前类是否满足要求来决定它是否生效。
+
+@AutoConfigurationPackage{
+
+@Import({Registrar.class})
+
+}
+@Import({AutoConfigurationImportSelector.class})
